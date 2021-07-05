@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const AttendanceSchema = new mongoose.Schema({
   markAs: {
     type: String,
   },
   reason: {
     type: String,
-    default: '',
+    default: "",
   },
   employeeID: {
     type: mongoose.Schema.Types.ObjectId,
@@ -23,4 +23,5 @@ const AttendanceSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Attendance = mongoose.model('Attendance', AttendanceSchema);
+
+module.exports = Attendance = mongoose.model("Attendance", AttendanceSchema);
