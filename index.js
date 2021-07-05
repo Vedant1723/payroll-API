@@ -12,6 +12,9 @@ app.use("/media", express.static(path.join(__dirname, "/media")));
 
 connectDB();
 
+// Routes Configuration
+app.use("/api/employer", require("./routes/api/employer"));
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
