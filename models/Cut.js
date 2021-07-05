@@ -10,4 +10,4 @@ const CutsSchema = new mongoose.Schema({
   status: { type: String },
 });
 
-module.exports = Cuts = mongoose.model("Cuts", CutsSchema);
+module.exports = Cut = mongoose.model("Cut", CutsSchema);
