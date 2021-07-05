@@ -1,0 +1,87 @@
+employeer -> master
+employee -> worker
+
+employeer
+roles
+-> employes managemet -> crud
+emplyess salary management -> bases of no of presents
+
+employee => attance managemet
+
+employeer
+modelS
+BusinessName,
+ownerName
+BusinessType
+NoofEMPLOYESS
+PHONE
+PASSWORD
+DATE
+
+employee
+name
+email
+PHONE
+address
+businessid
+slaey
+salarytpe,weekl,montly,hors,perday
+
+
+->address
+markas predentor abset
+reason(default "")
+employeeID,
+ispaid(boolena , fasle if leave true)
+date
+
+
+->salary 
+amaount,
+employeeID
+date,
+busineessID
+type:
+
+-> Allowance
+salaryId
+employeeID
+busineessID
+amaount
+Details
+
+
+->cut
+salaryId
+employeeID
+busineessID
+amaount
+Details
+
+
+Auth Module => will complete it by today
+
+Employee Module => Crud operation 
+
+Attandance => MarkAttandenceof Emplaoyee
+
+=> same day attandance will be mark (Team2 + me)
+
+git commands :-
+
+git init //git initialized
+git add . => add all the file in the current directory
+
+git commit -m "any commit"
+git remote v // check if the origin is exist
+If empty git remote add origin
+git remote remove origin
+git push origin<master> Team_2
+git push origin Team_2
+
+
+to create branchse
+git checkout -b Team_2
+git push origin Team_2
+
+
