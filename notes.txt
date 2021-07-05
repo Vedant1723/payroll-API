@@ -70,7 +70,10 @@ Team 1 => Sahil and Chirag
 Team 2 => Akshit and Shubham
 
 Auth Module => will complete it by today 
+
 Employee Module => CRUD Operations (Team 1)
+
+
 Attendance => MarkAttendance of Employee => Same Day attendace mark kr rhe ho to attendance update hojegi new attendance create nahi hgi (Team 2 + me)
 
 github => Team 1 => Team_1
