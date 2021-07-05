@@ -1,0 +1,80 @@
+Employee Payroll System
+Users
+->Employer
+->Employee
+
+->Employer => Master
+->Employee => Worker
+
+->Employer 
+Roles
+->Employee Management (CRUD Operation)
+->Employee's Salary Management (On the basis Of No. Of Presents!)
+->Employee's Attendance Management
+
+Models
+->Employer
+businessName,
+ownerName,
+businessType,
+noOfEmployees,
+Email,
+phone,
+password,
+date
+
+->Employee
+name,
+email,
+phone,
+address,
+businessID,
+date,
+salary,
+salaryType,(perHour,perDay,weekly or monthly)
+
+->Attendance
+markAs (present/absent)
+reason (default:"", if absent :"xyz reason")
+empID,
+businessID,
+isPaid (boolean, default:false, if Leave then true)
+date,
+
+->Salary
+amount,
+empID,
+businessID,
+date,
+type,
+
+->Allowance
+salaryID,
+empID,
+businessID,
+date,
+amount,
+details
+
+
+->Cuts
+salaryID,
+empID,
+businessID,
+date,
+amount,
+details
+
+
+Team 1 => Sahil and Chirag
+Team 2 => Akshit and Shubham
+
+Auth Module => will complete it by today 
+Employee Module => CRUD Operations (Team 1)
+Attendance => MarkAttendance of Employee => Same Day attendace mark kr rhe ho to attendance update hojegi new attendance create nahi hgi (Team 2 + me)
+
+github => Team 1 => Team_1
+Team 2 => Team_2
+
+1. git init // Git initialize 
+2. git add . // add all the files present in the current directory
