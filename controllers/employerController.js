@@ -208,12 +208,12 @@ exports.markAttendance = async (req, res) => {
     };
 
     // If current's date attendace is already given then update it else create it
-    var attendance = await Attendance.find({
+    var attendances = await Attendance.find({
       employeeID: req.params.empID,
       businessID: req.emp.id,
     });
 
-    var attendace;
+    var attendance;
     // Attendance filter by today Date
     var result = attendances.filter((att) => {
       if (

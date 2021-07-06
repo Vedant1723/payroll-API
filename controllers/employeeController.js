@@ -3,7 +3,7 @@ require("dotenv").config();
 
 //@GET Route
 //@DESC Get Employee
-exports.get = async (req, res) => {
+exports.getEmployees = async (req, res) => {
   try {
     const emp = await Employee.find({ businessID: req.emp.id });
     res.json(emp);
@@ -14,7 +14,7 @@ exports.get = async (req, res) => {
 
 //@POST Route
 //@DESC Create Employee
-exports.create = async (req, res) => {
+exports.createEmployee = async (req, res) => {
   const { name, email, phone, address, salary, salaryType } = req.body;
   try {
     var empObj = {
@@ -37,13 +37,13 @@ exports.create = async (req, res) => {
 
 //@PUT Route
 //@DESC Update Employee
-exports.update = async (req, res) => {
+exports.updateEmployee = async (req, res) => {
   try {
     const id = req.params.id;
     const update = req.body;
     const options = { new: true };
     const result = await Employee.findByIdAndUpdate(id, update, options);
-    res.json({ statusCode: 200, message: "Successful", data: result });
+    res.json({ statusCode: 200, message: "Employee Updated!", data: result });
   } catch (error) {
     console.log(error.message);
     if (error.kind == "ObjectId") {
@@ -54,11 +54,11 @@ exports.update = async (req, res) => {
 
 //@Delete Route
 //@DESC Delete Employee
-exports.delete = async (req, res) => {
+exports.deleteEmployee = async (req, res) => {
   try {
     const id = req.params.id;
     const result = await Employee.findByIdAndDelete(id);
-    res.json({ statusCode: 200, message: "Successful", data: result });
+    res.json({ statusCode: 200, message: "Employee Deleted!", data: result });
   } catch (error) {
     console.log(error.message);
   }
