@@ -4,9 +4,12 @@ const otpGenerator = require("../config/otpGenerator");
 const Employer = require("../models/Employer");
 const sendMail = require("../config/sendMail");
 const Otp = require("../models/Otp");
+const Employee = require("../models/Employee");
 require("dotenv").config();
+const Attendance = require("../models/Attendance");
+const moment = require("moment");
 
-// /*-----------------***Auth**-----------------------*/
+// *-----------------***Auth**-----------------------*/
 
 exports.login = async (req, res) => {
   try {
@@ -149,4 +152,95 @@ exports.confirmOTP = async (req, res) => {
   }
 };
 
-// /*-----------------***/Auth**-----------------------*/
+// *-----------------***Auth**-----------------------*/
+
+// *----------------***Attendance***----------------------*/
+
+exports.getAttendanceByMonth = async (req, res) => {
+  try {
+    const month = req.params.month;
+
+    // Check if Employee exists or not
+    var employee = await Employee.findById(req.params.empID);
+
+    if (!employee) {
+      return res.json({ statusCode: 400, message: "Employee ID is Invalid!" });
+    }
+    var attendances = await Attendance.find({
+      businessID: req.emp.id,
+      employeeID: req.params.empID,
+    });
+
+    // Attendance filter by Passed Month
+    var result = attendances.filter((att) => {
+      if (
+        moment(att.date).format("MM") == month &&
+        Date.now() >= employee.date
+      ) {
+        return att;
+      }
+    });
+
+    return res.json(result);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.markAttendance = async (req, res) => {
+  try {
+    // markAs => Present/Absent/Leave
+    const markAs = req.params.markAs;
+
+    // Check if Employee exists or not
+    var employee = await Employee.findById(req.params.empID);
+
+    if (!employee) {
+      return res.json({ statusCode: 400, message: "Employee ID is Invalid!" });
+    }
+
+    var attObj = {
+      markAs: markAs,
+      reason: markAs == "Absent" || markAs == "Leave" ? req.body.reason : "",
+      employeeID: req.params.empID,
+      businessID: req.emp.id,
+      isPaid: markAs == "Leave" ? req.body.isPaid : false,
+    };
+
+    // If current's date attendace is already given then update it else create it
+    var attendance = await Attendance.find({
+      employeeID: req.params.empID,
+      businessID: req.emp.id,
+    });
+
+    var attendace;
+    // Attendance filter by today Date
+    var result = attendances.filter((att) => {
+      if (
+        moment(att.date).format("DD-MM-YYYY") ==
+        moment(Date.now()).format("DD-MM-YYYY")
+      ) {
+        return att;
+      }
+    });
+
+    if (result.length > 0) {
+      attendance = result[0];
+
+      // Updating
+      var newAtt = await Attendance.findByIdAndUpdate(attendance._id, attObj, {
+        new: true,
+      });
+      return res.json({ statusCode: 200, message: "Attendance Updated!" });
+    } else {
+      // Creating
+      var newAtt = new Attendance(attObj);
+      await newAtt.save();
+      return res.json({ statusCode: 200, message: "Attendance Marked!" });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// *----------------***Attendance***----------------------*/

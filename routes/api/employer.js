@@ -1,6 +1,7 @@
 const employerController = require("../../controllers/employerController");
+const auth = require("../../middleware/auth");
 const router = require("express").Router();
-// /*-----------------***Auth**-----------------------*/
+// *-----------------***Auth**-----------------------*/
 
 //@POST route
 //@DESC User Signup
@@ -14,6 +15,26 @@ router.post("/login", employerController.login);
 // @DESC Confirm OTP
 router.post("/confirm-otp", employerController.confirmOTP);
 
-// /*-----------------***/Auth**-----------------------*/
+// *----------------***Auth***----------------------*/
+
+// *----------------***Attendance***----------------------*/
+
+// @GET Route
+// @DESC Get Attendence of Specific Employee
+router.get(
+  "/attendance/:month/:empID",
+  auth,
+  employerController.getAttendanceByMonth
+);
+
+// @POST Route
+// @DESC Mark Attedance of Specific Employee by Passing Attendance as a Params
+router.post(
+  "/attendance/mark/:empID/:markAs",
+  auth,
+  employerController.markAttendance
+);
+
+// *----------------***Attendance***----------------------*/
 
 module.exports = router;

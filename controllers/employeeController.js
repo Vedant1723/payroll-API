@@ -1,5 +1,3 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Employee = require("../models/Employee");
 require("dotenv").config();
 
@@ -17,7 +15,7 @@ exports.get = async (req, res) => {
 //@POST Route
 //@DESC Create Employee
 exports.create = async (req, res) => {
-  const { name, email, phone, address, date, salary, salaryType } = req.body;
+  const { name, email, phone, address, salary, salaryType } = req.body;
   try {
     var empObj = {
       name: name,
@@ -25,7 +23,6 @@ exports.create = async (req, res) => {
       phone: phone,
       address: address,
       businessID: req.emp.id,
-      date: date,
       salary: salary,
       salaryType: salaryType,
     };
