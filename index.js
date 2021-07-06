@@ -15,6 +15,7 @@ connectDB();
 // Routes Configuration
 app.use("/api/employer", require("./routes/api/employer"));
 app.use("/api/employee", require("./routes/api/employee"));
+app.use("/api/salary", require("./routes/api/salary"));
 
 const PORT = process.env.PORT || 5000;
 
