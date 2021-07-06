@@ -1,9 +1,12 @@
 const mongoose = require("mongoose");
 
 const SalarySchema = new mongoose.Schema({
-  empId: { type: String },
-  businessId: { type: String },
-  salarysId: { type: String },
+  empID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  businessID: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
   date: { type: Date, default: Date.now() },
   amount: { type: Number },
   type: { type: String },
