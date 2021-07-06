@@ -7,7 +7,6 @@ const CutsSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now() },
   amount: { type: Number },
   details: { type: String },
-  status: { type: String },
 });
 
 module.exports = Cut = mongoose.model("Cut", CutsSchema);
