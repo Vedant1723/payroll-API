@@ -37,4 +37,23 @@ router.post(
 
 // *----------------***Attendance***----------------------*/
 
+// *----------------***Task***----------------------*/
+
+// @GET Route
+// @DESC Get all the tasks of Logged in Employer
+router.get("/tasks/all", auth, employerController.getTasks);
+
+// @POST Route
+// @DESC Create Task
+router.post("/task/create-task", auth, employerController.createTask);
+
+// @PUT Route
+// @DESC Update Task
+router.put("/task/update-task/:id", auth, employerController.updateTask);
+
+// @DELETE Route
+// @DESC Delete Task
+router.delete("/task/delete-task/:id", auth, employerController.deleteTask);
+// *----------------***Task***----------------------*/
+
 module.exports = router;

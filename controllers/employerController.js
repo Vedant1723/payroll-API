@@ -8,6 +8,7 @@ const Employee = require("../models/Employee");
 require("dotenv").config();
 const Attendance = require("../models/Attendance");
 const moment = require("moment");
+const Task = require("../models/Task");
 
 // *-----------------***Auth**-----------------------*/
 
@@ -244,3 +245,59 @@ exports.markAttendance = async (req, res) => {
 };
 
 // *----------------***Attendance***----------------------*/
+
+// *----------------***Task***----------------------*/
+
+exports.createTask = async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    var task = new Task({ title, description, empID: req.emp.id });
+    await task.save();
+
+    return res.json({
+      statusCode: 200,
+      message: "Task Created!",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.getTasks = async (req, res) => {
+  try {
+    var tasks = await Task.find({ empID: req.emp.id });
+    return res.json(tasks);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.updateTask = async (req, res) => {
+  try {
+    const { title, description } = req.body;
+    var task = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title, description },
+      { new: true }
+    );
+    return res.json({
+      statusCode: 200,
+      message: "Task Updated!",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.deleteTask = async (req, res) => {
+  try {
+    await Task.findByIdAndDelete(req.params.id);
+    return res.json({
+      statusCode: 200,
+      message: "Task Deleted!",
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+// *----------------***Task***----------------------*/
