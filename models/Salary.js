@@ -10,7 +10,7 @@ const SalarySchema = new mongoose.Schema({
   date: { type: Date, default: Date.now() },
   amount: { type: Number },
   type: { type: String },
-  status: { type: String },
+  status: { default: "unpaid", type: String },
 });
 
 module.exports = Salary = mongoose.model("Salary", SalarySchema);

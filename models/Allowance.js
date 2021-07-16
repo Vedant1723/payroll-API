@@ -7,7 +7,7 @@ const AllowanceSchema = new mongoose.Schema({
   businessID: {
     type: mongoose.Schema.Types.ObjectId,
   },
-  salarysID: {
+  salaryID: {
     type: mongoose.Schema.Types.ObjectId,
   },
   date: { type: Date, default: Date.now() },

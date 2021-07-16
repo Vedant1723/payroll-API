@@ -48,7 +48,13 @@ router.put("/update-cut/:cutID", auth, salaryController.updateCut);
 // @DESC Delete specific Cut
 router.delete("/delete-cut/:cutID", auth, salaryController.deleteCut);
 
-// Same process cut m follow hoga
+// @POST Route
+// @DESC Create Salary for Specific Employee
+router.post("/create-salary/:empID", auth, salaryController.createSalary);
+
+// @POST Get Route
+// @DESC Pay Salary to Specific Employee
+router.get("/pay-salary/:empID", auth, salaryController.paySalary);
 
 // *----------------***Salary***----------------------*/
 

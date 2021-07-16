@@ -25,7 +25,10 @@ exports.createAllowance = async (req, res) => {
     if (!salary) {
       return res.json({ statusCode: 400, message: "Salary ID is not Valid!" });
     }
+    // Modify salary Amount here
+    salary.amount = salary.amount + amount;
 
+    await salary.save();
     var allowanceObj = {
       businessID: req.emp.id,
       empID: salary.empID,
@@ -56,6 +59,20 @@ exports.updateAllowance = async (req, res) => {
       details: details,
     };
 
+    // Modifying Salary Amount
+    var allowance = await Allowance.findById(req.params.allowanceID);
+
+    var salary = await Salary.findById(allowance.salaryID);
+
+    if (allowance.amount > amount) {
+      var total = allowance.amount - amount;
+      salary.amount = salary.amount + total;
+    } else {
+      var total = amount - allowance.amount;
+      salary.amount = salary.amount - total;
+    }
+    await salary.save();
+
     await Allowance.findOneAndUpdate(
       { _id: req.params.allowanceID },
       { $set: allowanceObj },
@@ -69,6 +86,15 @@ exports.updateAllowance = async (req, res) => {
 
 exports.deleteAllowance = async (req, res) => {
   try {
+    // Modifying Salary Amount
+    var allowance = await Allowance.findById(req.params.allowanceID);
+
+    var salary = await Salary.findById(allowance.salaryID);
+
+    salary.amount = salary.amount - allowance.amount;
+
+    await salary.save();
+
     await Allowance.findByIdAndDelete(req.params.allowanceID);
 
     return res.json({ statusCode: 200, message: "Allowance removed!" });
@@ -96,6 +122,10 @@ exports.createCut = async (req, res) => {
     if (!salary) {
       return res.json({ statusCode: 400, message: "Salary ID is not Valid!" });
     }
+
+    salary.amount = salary.amount - amount;
+
+    await salary.save();
 
     var cutObj = {
       businessID: req.emp.id,
@@ -127,6 +157,21 @@ exports.updateCut = async (req, res) => {
       details: details,
     };
 
+    // Modifying salary amount
+    var cut = await Cut.findById(req.params.cutID);
+
+    var salary = await Salary.findById(cut.salaryID);
+
+    if (cut.amount > amount) {
+      var total = cut.amount - amount;
+      salary.amount += total;
+    } else {
+      var total = amount - cut.amount;
+      salary.amount -= total;
+    }
+
+    await salary.save();
+
     await Cut.findOneAndUpdate(
       { _id: req.params.cutID },
       { $set: cutObj },
@@ -140,12 +185,49 @@ exports.updateCut = async (req, res) => {
 
 exports.deleteCut = async (req, res) => {
   try {
+    // Modifying salary amount
+    var cut = await Cut.findById(req.params.cutID);
+
+    var salary = await Salary.findById(cut.salaryID);
+
+    salary.amount += cut.amount;
+    await salary.save();
+
     await Cut.findByIdAndDelete(req.params.cutID);
 
     return res.json({ statusCode: 200, message: "Cut removed!" });
   } catch (error) {
     console.log(error.message);
   }
+};
+
+exports.createSalary = async (req, res) => {
+  try {
+    var employee = await Employee.findById(req.params.id);
+
+    const { amount } = req.body;
+    const salaryObj = {
+      amount: amount,
+      empID: employee.id,
+      businessID: req.emp.id,
+      type: employee.salaryType,
+    };
+    var salary = new Salary(salaryObj);
+    await salary.save();
+    return res.json({
+      statusCode: 200,
+      message: "Salary Created!",
+      salary: salary,
+      employee: employee,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.paySalary = async (req, res) => {
+  try {
+  } catch (error) {}
 };
 
 // *----------------***Salary***----------------------*/
