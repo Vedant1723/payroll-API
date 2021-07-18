@@ -1,5 +1,6 @@
 const Employee = require("../models/Employee");
 require("dotenv").config();
+const Salary = require("../models/Salary");
 
 //@GET Route
 //@DESC Get Employee
@@ -7,6 +8,15 @@ exports.getEmployees = async (req, res) => {
   try {
     const emp = await Employee.find({ businessID: req.emp.id });
     res.json(emp);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.getSpecificEmployee = async (req, res) => {
+  try {
+    const employee = await Employee.findById(req.params.id);
+    return res.json(employee);
   } catch (error) {
     console.log(error.message);
   }
@@ -20,15 +30,24 @@ exports.createEmployee = async (req, res) => {
     var empObj = {
       name: name,
       email: email,
-      phone: phone,
+      phone: parseInt(phone),
       address: address,
       businessID: req.emp.id,
-      salary: salary,
+      salary: parseInt(salary),
       salaryType: salaryType,
     };
     const emp = new Employee(empObj);
 
     await emp.save();
+
+    const salaryObj = {
+      amount: parseInt(salary),
+      empID: emp.id,
+      businessID: req.emp.id,
+      type: salaryType,
+    };
+    var salaryDB = new Salary(salaryObj);
+    await salaryDB.save();
     res.json({ statusCode: 200, message: "Employee Created", data: emp });
   } catch (error) {
     console.log(error.message);

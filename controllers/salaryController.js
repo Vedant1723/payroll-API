@@ -3,6 +3,7 @@ const Salary = require("../models/Salary");
 const Employer = require("../models/Employer");
 const Employee = require("../models/Employee");
 const Cut = require("../models/Cut");
+const Attendance = require("../models/Attendance");
 
 // *----------------***Salary***----------------------*/
 
@@ -15,10 +16,19 @@ exports.getAllowances = async (req, res) => {
   }
 };
 
+exports.getSalaries = async (req, res) => {
+  try {
+    const salaries = await Salary.find({ businessID: req.emp.id });
+    res.json(salaries);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 exports.createAllowance = async (req, res) => {
   try {
-    const { amount, details } = req.body;
-
+    const { details } = req.body;
+    var amount = parseInt(req.body.amount);
     // Fetch Employee from Salary
     var salary = await Salary.findById(req.params.salaryID);
 
@@ -114,7 +124,8 @@ exports.getCut = async (req, res) => {
 
 exports.createCut = async (req, res) => {
   try {
-    const { amount, details } = req.body;
+    const { details } = req.body;
+    var amount = parseInt(req.body.amount);
 
     // Fetch Employee from Salary
     var salary = await Salary.findById(req.params.salaryID);
@@ -203,9 +214,10 @@ exports.deleteCut = async (req, res) => {
 
 exports.createSalary = async (req, res) => {
   try {
-    var employee = await Employee.findById(req.params.id);
+    var employee = await Employee.findById(req.params.empID);
 
-    const { amount } = req.body;
+    var amount = parseInt(req.body.amount);
+    console.log(amount);
     const salaryObj = {
       amount: amount,
       empID: employee.id,
@@ -214,6 +226,7 @@ exports.createSalary = async (req, res) => {
     };
     var salary = new Salary(salaryObj);
     await salary.save();
+    console.log(salary);
     return res.json({
       statusCode: 200,
       message: "Salary Created!",
@@ -227,7 +240,74 @@ exports.createSalary = async (req, res) => {
 
 exports.paySalary = async (req, res) => {
   try {
-  } catch (error) {}
+    // Pay salary as per the number of present (in the case of monthly employees)
+
+    // Fetch Current month Attendance
+
+    var employee = await Employee.findById(req.params.empID);
+    var salary = await Salary.findOne({
+      empID: req.params.empID,
+      status: "unpaid",
+    });
+    var attendances = await Attendance.find({
+      empID: employee.id,
+      markAs: "present",
+    });
+
+    if (employee.salaryType == "monthly") {
+      if (attendances.length == 0) {
+        // Salary will be 0
+        var salaryObj = {
+          empID: employee.id,
+          businessID: req.emp.id,
+          amount: 0,
+          type: employee.salaryType,
+          status: "paid",
+        };
+        salary.amount = 0;
+        salary.status = "paid";
+        await salary.save();
+      } else {
+        var thisMonthAttendances = attendances.flter((att) => {
+          if (
+            new Date(att.date).getMonth() == new Date(Date.now()).getMonth()
+          ) {
+            return att;
+          }
+        });
+        var totalSalary = salary.amount / 30;
+        var newSalary = totalSalary * thisMonthAttendances.length;
+        salary.amount = newSalary;
+        salary.status = "paid";
+        await salary.save();
+      }
+    } else {
+      salary.status = "paid";
+      await salary.save();
+    }
+    return res.json({
+      statusCode: 200,
+      message: "Salary Paid",
+      salary: salary,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.getSalary = async (req, res) => {
+  try {
+    var salary = await Salary.findOne({
+      empID: req.params.empID,
+      status: "unpaid",
+    });
+    if (!salary) {
+      return res.json({ statusCode: 400 });
+    }
+    return res.json({ statusCode: 200, salary });
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 // *----------------***Salary***----------------------*/

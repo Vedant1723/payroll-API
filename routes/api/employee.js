@@ -6,6 +6,10 @@ const router = require("express").Router();
 //@DESC GET Employee
 router.get("/all", auth, employeeController.getEmployees);
 
+// @GET Route
+// @DESC Get Specific Employee
+router.get("/:id", auth, employeeController.getSpecificEmployee);
+
 //@POST route
 //@DESC CREATE Employee
 router.post("/create-employee", auth, employeeController.createEmployee);

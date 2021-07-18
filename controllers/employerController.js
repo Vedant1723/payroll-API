@@ -9,6 +9,7 @@ require("dotenv").config();
 const Attendance = require("../models/Attendance");
 const moment = require("moment");
 const Task = require("../models/Task");
+const Salary = require("../models/Salary");
 
 // *-----------------***Auth**-----------------------*/
 
@@ -245,6 +246,43 @@ exports.markAttendance = async (req, res) => {
 };
 
 // *----------------***Attendance***----------------------*/
+
+// *----------------***Home***----------------------*/
+
+exports.getDetails = async (req, res) => {
+  try {
+    var business = await Employer.findById(req.emp.id);
+
+    var employees = await Employee.find({ businessID: req.emp.id });
+
+    var salaries = await Salary.find({
+      businessID: req.emp.id,
+      status: "paid",
+    });
+
+    var presentAtt = await Attendance.find({
+      businessID: req.emp.id,
+      markAs: "present",
+    });
+
+    var absentAtt = await Attendance.find({
+      businessID: req.emp.id,
+      markAs: "absent",
+    });
+    return res.json({
+      statusCode: 200,
+      business: business,
+      employeesCount: employees.length,
+      presents: presentAtt.length,
+      absents: absentAtt.length,
+      transactions: salaries.length,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// *----------------***Home***----------------------*/
 
 // *----------------***Task***----------------------*/
 

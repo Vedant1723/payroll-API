@@ -15,6 +15,11 @@ const OtpSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  expireAt: {
+    type: Date,
+    default: Date.now,
+    index: { expires: "15m" },
+  },
 });
 
 module.exports = Otp = mongoose.model("Otp", OtpSchema);

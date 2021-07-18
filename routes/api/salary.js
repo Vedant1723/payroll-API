@@ -11,7 +11,7 @@ router.get("/allowances/:salaryID", auth, salaryController.getAllowances);
 // @Post Route
 // @DESC Create All Allowances of Specific Salary
 router.post(
-  "/create-allowances/:salaryID",
+  "/create-allowance/:salaryID",
   auth,
   salaryController.createAllowance
 );
@@ -56,6 +56,13 @@ router.post("/create-salary/:empID", auth, salaryController.createSalary);
 // @DESC Pay Salary to Specific Employee
 router.get("/pay-salary/:empID", auth, salaryController.paySalary);
 
+// @GET Route
+// @DESC Get Unpaid Salary of Specific Employee
+router.get("/details/:empID", auth, salaryController.getSalary);
+
+// @GET Route
+// @DESC Get All Salaries/Transactions
+router.get("/all", auth, salaryController.getSalaries);
 // *----------------***Salary***----------------------*/
 
 module.exports = router;

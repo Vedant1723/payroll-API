@@ -17,6 +17,14 @@ router.post("/confirm-otp", employerController.confirmOTP);
 
 // *----------------***Auth***----------------------*/
 
+// *----------------***Home***----------------------*/
+
+// @GET Route
+// @DESC Get Home Page Details
+router.get("/details", auth, employerController.getDetails);
+
+// *----------------***Home***----------------------*/
+
 // *----------------***Attendance***----------------------*/
 
 // @GET Route
