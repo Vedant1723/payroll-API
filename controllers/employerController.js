@@ -75,7 +75,7 @@ exports.signup = async (req, res) => {
       email,
       password,
       ownerName,
-      phone,
+      phone: parseInt(phone),
       businessType,
       noOfEmployess,
     });
