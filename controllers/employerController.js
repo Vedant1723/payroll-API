@@ -32,7 +32,7 @@ exports.login = async (req, res) => {
     // Token Generation
     const payload = {
       emp: {
-        id: employer.id,
+        id: emp.id,
       },
     };
 
@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
         return res.json({
           statusCode: 200,
           message: "Employer Authorized!",
-          data: employer,
+          data: emp,
           token: token,
         });
       }
@@ -93,7 +93,7 @@ exports.signup = async (req, res) => {
     // Token Generation
     const payload = {
       emp: {
-        id: employer.id,
+        id: emp.id,
       },
     };
 
@@ -106,7 +106,7 @@ exports.signup = async (req, res) => {
         return res.json({
           statusCode: 200,
           message: "Employer Created!",
-          data: employer,
+          data: emp,
           token: token,
         });
       }
