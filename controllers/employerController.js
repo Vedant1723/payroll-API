@@ -29,24 +29,27 @@ exports.login = async (req, res) => {
       return res.json({ statusCode: 400, message: "Invalid Credentials!" });
     }
 
-    let otp = new Otp({
-      userID: emp.id,
-      otp: otpGenerator(6),
-    });
+    // Token Generation
+    const payload = {
+      emp: {
+        id: employer.id,
+      },
+    };
 
-    await otp.save((err) => {
-      if (err) return res.json({ statusCode: 500, message: err.message });
-    });
-
-    // Send OTP to the Respective employer
-    sendMail(emp.email, "OTP Verification", {
-      name: emp.ownerName,
-      otp: otp.otp,
-    });
-    return res.json({
-      statusCode: 200,
-      message: "OTP Sent to " + emp.email,
-    });
+    jwt.sign(
+      payload,
+      process.env.jwtSecret,
+      { expiresIn: 360000000 },
+      (err, token) => {
+        if (err) throw err;
+        return res.json({
+          statusCode: 200,
+          message: "Employer Authorized!",
+          data: employer,
+          token: token,
+        });
+      }
+    );
   } catch (error) {
     console.log(error.message);
   }
@@ -87,24 +90,27 @@ exports.signup = async (req, res) => {
     //Saving the emp into DB
     await emp.save();
 
-    let otp = new Otp({
-      userID: emp.id,
-      otp: otpGenerator(6),
-    });
+    // Token Generation
+    const payload = {
+      emp: {
+        id: employer.id,
+      },
+    };
 
-    await otp.save((err) => {
-      if (err) return res.json({ statusCode: 500, message: err.message });
-    });
-
-    // Send OTP to the Respective employer
-    sendMail(emp.email, "OTP Verification", {
-      name: emp.ownerName,
-      otp: otp.otp,
-    });
-    return res.json({
-      statusCode: 200,
-      message: "OTP Sent to " + emp.email,
-    });
+    jwt.sign(
+      payload,
+      process.env.jwtSecret,
+      { expiresIn: 360000000 },
+      (err, token) => {
+        if (err) throw err;
+        return res.json({
+          statusCode: 200,
+          message: "Employer Created!",
+          data: employer,
+          token: token,
+        });
+      }
+    );
   } catch (error) {
     console.log(error.message);
   }
