@@ -266,6 +266,7 @@ exports.paySalary = async (req, res) => {
         };
         salary.amount = 0;
         salary.status = "paid";
+        salary.empDetails = employee;
         await salary.save();
       } else {
         var thisMonthAttendances = attendances.flter((att) => {
@@ -279,10 +280,14 @@ exports.paySalary = async (req, res) => {
         var newSalary = totalSalary * thisMonthAttendances.length;
         salary.amount = newSalary;
         salary.status = "paid";
+        salary.empDetails = employee;
+
         await salary.save();
       }
     } else {
       salary.status = "paid";
+      salary.empDetails = employee;
+
       await salary.save();
     }
     return res.json({

@@ -10,6 +10,9 @@ const SalarySchema = new mongoose.Schema({
   date: { type: Date, default: Date.now() },
   amount: { type: Number },
   type: { type: String },
+  empDetails: {
+    type: Object,
+  },
   status: { type: String, default: "unpaid" },
 });
 
