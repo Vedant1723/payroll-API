@@ -80,7 +80,7 @@ exports.signup = async (req, res) => {
       ownerName,
       phone: parseInt(phone),
       businessType,
-      noOfEmployess,
+      noOfEmployess: parseInt(noOfEmployess),
     });
 
     // Hashing the Password
