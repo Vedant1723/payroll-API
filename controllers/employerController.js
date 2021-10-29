@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const otpGenerator = require("../config/otpGenerator");
 const Employer = require("../models/Employer");
 const sendMail = require("../config/sendMail");
-const Otp = require("../models/Otp");
 const Employee = require("../models/Employee");
 require("dotenv").config();
 const Attendance = require("../models/Attendance");

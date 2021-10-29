@@ -1,4 +1,5 @@
 const Employee = require("../models/Employee");
+const Employer = require("../models/Employer");
 require("dotenv").config();
 const Salary = require("../models/Salary");
 
@@ -37,6 +38,10 @@ exports.createEmployee = async (req, res) => {
       salaryType: salaryType,
     };
     const emp = new Employee(empObj);
+
+    const employer = await Employer.findById(req.emp.id).select("-password");
+
+    empObj.organisation = employer;
 
     await emp.save();
 

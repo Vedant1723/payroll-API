@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const EmployeeSchema = new mongoose.Schema({
@@ -14,6 +13,9 @@ const EmployeeSchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  organisation: {
+    type: Object,
+  },
   businessID: {
     type: mongoose.Schema.Types.ObjectId,
   },
@@ -28,6 +30,5 @@ const EmployeeSchema = new mongoose.Schema({
     type: String,
   },
 });
-
 
 module.exports = Employee = mongoose.model("Employee", EmployeeSchema);
