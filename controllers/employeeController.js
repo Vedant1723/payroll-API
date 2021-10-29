@@ -37,11 +37,10 @@ exports.createEmployee = async (req, res) => {
       salary: parseInt(salary),
       salaryType: salaryType,
     };
-    const emp = new Employee(empObj);
-
     const employer = await Employer.findById(req.emp.id).select("-password");
 
     empObj.organisation = employer;
+    const emp = new Employee(empObj);
 
     await emp.save();
 
